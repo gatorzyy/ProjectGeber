@@ -1,0 +1,313 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ============================================
+// USER & AUTH MODELS
+// ============================================
+
+// User model for adult accounts (parents, guardians, grandparents)
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  passwordHash    String
+  name            String
+  avatarUrl       String?
+  isAdmin         Boolean  @default(false)  // Superuser flag
+  emailVerified   Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  familyMembers   FamilyMember[]
+  sessions        Session[]
+  googleTokens    GoogleToken?
+}
+
+// Session model for auth
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token        String   @unique  // Refresh token hash
+  expiresAt    DateTime
+  userAgent    String?
+  ipAddress    String?
+  createdAt    DateTime @default(now())
+}
+
+// Google OAuth tokens for calendar integration
+model GoogleToken {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken  String
+  refreshToken String
+  expiresAt    DateTime
+  scope        String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ============================================
+// FAMILY MODELS
+// ============================================
+
+// Family grouping
+model Family {
+  id          String   @id @default(cuid())
+  name        String
+  inviteCode  String   @unique @default(cuid())
+  isDefault   Boolean  @default(false)  // Migration: marks default family
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members        FamilyMember[]
+  kids           Kid[]
+  calendarEvents CalendarEvent[]
+}
+
+// User membership in Family with role/permissions
+model FamilyMember {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  familyId    String
+  family      Family   @relation(fields: [familyId], references: [id], onDelete: Cascade)
+
+  role        String   @default("parent")  // "primary", "parent", "guardian", "grandparent"
+  permissions String   @default("view")    // "full", "manage", "comment", "view"
+
+  joinedAt    DateTime @default(now())
+  invitedBy   String?  // userId who invited this member
+
+  @@unique([userId, familyId])
+}
+
+// Imported calendar events
+model CalendarEvent {
+  id              String    @id @default(cuid())
+  familyId        String
+  family          Family    @relation(fields: [familyId], references: [id], onDelete: Cascade)
+
+  // Google Calendar reference
+  googleEventId   String?
+  googleCalendarId String?
+
+  // Event details
+  title           String
+  description     String?
+  startTime       DateTime
+  endTime         DateTime
+  isAllDay        Boolean   @default(false)
+  location        String?
+
+  // Conversion to task
+  convertedToTaskId String?  // If this event was converted to a task
+
+  // Recurrence
+  recurrenceRule  String?   // RRULE format from Google
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([googleEventId, familyId])
+}
+
+// ============================================
+// KID & TASK MODELS
+// ============================================
+
+model Kid {
+  id          String       @id @default(cuid())
+  name        String
+  avatarColor String       @default("#8B5CF6")
+  avatarUrl   String?      // Profile picture URL
+  motto       String?      // Kid's motto or intro
+  pin         String?      // Simple 4-digit PIN for kid login
+  totalPoints Int          @default(0)
+  totalGems   Int          @default(0)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Family relation
+  familyId    String?
+  family      Family?      @relation(fields: [familyId], references: [id], onDelete: SetNull)
+
+  // Shareable access link (no login required)
+  accessToken        String?   @unique  // Unique token for shareable link
+  accessTokenExpiry  DateTime?          // Optional expiry date
+  accessTokenEnabled Boolean   @default(false)  // Toggle to enable/disable
+
+  // Relations
+  tasks       Task[]
+  redemptions Redemption[]
+  pointLogs   PointLog[]
+
+  // Social features
+  following        Follow[]        @relation("Follower")
+  followers        Follow[]        @relation("Following")
+  sentRequests     FriendRequest[] @relation("Requester")
+  receivedRequests FriendRequest[] @relation("Recipient")
+
+  // Other features
+  rewardRequests   RewardRequest[]
+  streak           Streak?
+}
+
+// One-way follow relationship
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  follower    Kid      @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following   Kid      @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+}
+
+// Friend request (mutual friendship when accepted)
+model FriendRequest {
+  id          String   @id @default(cuid())
+  requesterId String
+  recipientId String
+  status      String   @default("pending") // "pending", "accepted", "rejected"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  requester   Kid      @relation("Requester", fields: [requesterId], references: [id], onDelete: Cascade)
+  recipient   Kid      @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, recipientId])
+}
+
+model PointLog {
+  id        String   @id @default(cuid())
+  kidId     String
+  kid       Kid      @relation(fields: [kidId], references: [id], onDelete: Cascade)
+  oldPoints Int
+  newPoints Int
+  reason    String
+  createdAt DateTime @default(now())
+}
+
+model Task {
+  id            String    @id @default(cuid())
+  title         String
+  description   String?
+  pointValue    Int       @default(1)
+  dueDate       DateTime?
+  isRecurring   Boolean   @default(false)
+  recurringType String?   // "daily", "weekly"
+  isCompleted   Boolean   @default(false)
+  completedAt   DateTime?
+
+  // Task request flow
+  isKidRequest  Boolean   @default(false) // true if kid requested this task
+  requestStatus String    @default("approved") // "pending", "approved", "rejected"
+
+  // Completion proof and notes
+  proofImageUrl     String?  // URL/path to uploaded proof image
+  completionNote    String?  // Kid's description when completing
+  parentComment     String?  // Parent's feedback/comment
+  feedbackRequested Boolean  @default(false) // Kid requested parent feedback before completing
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  kidId         String
+  kid           Kid       @relation(fields: [kidId], references: [id], onDelete: Cascade)
+}
+
+// ============================================
+// REWARD MODELS
+// ============================================
+
+model Reward {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  pointCost   Int
+  imageUrl    String?
+  isActive    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  redemptions Redemption[]
+}
+
+model Redemption {
+  id          String   @id @default(cuid())
+  pointsSpent Int
+  status      String   @default("pending") // "pending", "approved", "rejected"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  kidId       String
+  kid         Kid      @relation(fields: [kidId], references: [id], onDelete: Cascade)
+  rewardId    String
+  reward      Reward   @relation(fields: [rewardId], references: [id], onDelete: Cascade)
+}
+
+// Kid-suggested reward ideas for parent approval
+model RewardRequest {
+  id          String   @id @default(cuid())
+  kidId       String
+  kid         Kid      @relation(fields: [kidId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  suggestedCost Int     @default(50) // Kid's suggested point cost
+  status      String   @default("pending") // "pending", "approved", "rejected"
+  parentNote  String?  // Parent's feedback
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ============================================
+// GAMIFICATION MODELS
+// ============================================
+
+// Streak tracking for consecutive task completion
+model Streak {
+  id              String   @id @default(cuid())
+  kidId           String   @unique
+  kid             Kid      @relation(fields: [kidId], references: [id], onDelete: Cascade)
+  currentStreak   Int      @default(0)  // Current consecutive days
+  longestStreak   Int      @default(0)  // Best streak ever
+  lastActiveDate  DateTime?            // Last date with completed task
+  weekBonus       Boolean  @default(false)  // Claimed 7-day bonus
+  monthBonus      Boolean  @default(false)  // Claimed 30-day bonus
+  quarterBonus    Boolean  @default(false)  // Claimed 90-day bonus
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// ============================================
+// APP SETTINGS
+// ============================================
+
+model AdminSettings {
+  id              String  @id @default(cuid())
+  passwordHash    String  // Legacy admin password (kept for backwards compatibility)
+  starPointsRatio Int     @default(1)  // points per star (1 point = 1 star)
+  gemPointsRatio  Int     @default(10) // points per gem (10 points = 1 gem)
+}
+
+// ============================================
+// BUG REPORTS
+// ============================================
+
+model BugReport {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  page        String   // Which page the bug was reported from
+  userType    String   // "kid", "parent", "admin", "guest"
+  userId      String?  // Optional: kid ID or user ID if logged in
+  status      String   @default("open") // "open", "in_progress", "resolved", "closed"
+  priority    String   @default("medium") // "low", "medium", "high", "critical"
+  adminNote   String?  // Admin's response or note
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

@@ -1,0 +1,10 @@
+-- CreateTable
+CREATE TABLE "PointLog" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "kidId" TEXT NOT NULL,
+    "oldPoints" INTEGER NOT NULL,
+    "newPoints" INTEGER NOT NULL,
+    "reason" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "PointLog_kidId_fkey" FOREIGN KEY ("kidId") REFERENCES "Kid" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
