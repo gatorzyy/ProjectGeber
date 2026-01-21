@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { getSessionFromRequest } from "@/lib/auth"
-import { isPrimaryParent, PERMISSIONS, hasPermission } from "@/lib/permissions"
+import { isPrimaryParent } from "@/lib/permissions"
 import type { Permission } from "@/lib/permissions"
 
 // Update member permissions or role

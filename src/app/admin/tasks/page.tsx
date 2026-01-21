@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Trash2, Edit2, Save, X, Copy, Check } from "lucide-react"
+import { Plus, Trash2, Edit2, Save, Copy, Check } from "lucide-react"
 import { Kid, Task, TaskFormData } from "@/lib/types"
 import { kidsApi, tasksApi } from "@/lib/api"
 import { Modal, KidAvatar, StarPoints, PageHeader } from "@/components"
@@ -15,7 +15,7 @@ import { Modal, KidAvatar, StarPoints, PageHeader } from "@/components"
 export default function ManageTasksPage() {
   const [kids, setKids] = useState<Kid[]>([])
   const [tasks, setTasks] = useState<Task[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [, setIsLoading] = useState(true)
   const [selectedKid, setSelectedKid] = useState<string>("")
   const [newTask, setNewTask] = useState<TaskFormData>({
     title: "",
@@ -43,6 +43,7 @@ export default function ManageTasksPage() {
 
   useEffect(() => {
     fetchData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fetchData = async () => {

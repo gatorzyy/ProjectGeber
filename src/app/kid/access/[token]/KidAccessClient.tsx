@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Star, Gem, ListTodo, Trophy, Gift, Calendar, Flame, CheckCircle } from "lucide-react"
+import { Star, Gem, ListTodo, Trophy, Gift, Flame, CheckCircle } from "lucide-react"
 import { BugReportButton } from "@/components"
 
 interface Task {
@@ -352,6 +351,7 @@ export default function KidAccessClient({
                 >
                   <CardContent className="p-4">
                     {reward.imageUrl && (
+                      /* eslint-disable-next-line @next/next/no-img-element */
                       <img
                         src={reward.imageUrl}
                         alt={reward.name}

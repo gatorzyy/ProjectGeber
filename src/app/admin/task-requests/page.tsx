@@ -1,12 +1,12 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { Check, X, Star, MessageSquare, Image as ImageIcon, Clock, HelpCircle } from "lucide-react"
+import { Check, X, MessageSquare, Image as ImageIcon, Clock, HelpCircle } from "lucide-react"
 import { Task } from "@/lib/types"
 import { tasksApi } from "@/lib/api"
 import { Modal, PageHeader, KidAvatar, StarPoints } from "@/components"
@@ -261,6 +261,7 @@ export default function TaskRequestsPage() {
                   <ImageIcon className="w-4 h-4" />
                   Proof Submitted
                 </Label>
+{/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={selectedTask.proofImageUrl}
                   alt="Task proof"

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Check, X, Lightbulb, Star } from "lucide-react"
 import { RewardRequest } from "@/lib/types"
 import { rewardRequestsApi } from "@/lib/api"
-import { Modal, PageHeader, KidAvatar, StarPoints } from "@/components"
+import { Modal, PageHeader, KidAvatar } from "@/components"
 
 export default function RewardRequestsPage() {
   const [requests, setRequests] = useState<RewardRequest[]>([])
@@ -80,7 +80,7 @@ export default function RewardRequestsPage() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <Lightbulb className="w-5 h-5 text-purple-500" />
-          <span className="text-muted-foreground">Kids' suggested rewards</span>
+          <span className="text-muted-foreground">Kids&apos; suggested rewards</span>
         </div>
         {pendingCount > 0 && (
           <Badge variant="destructive">{pendingCount} pending</Badge>

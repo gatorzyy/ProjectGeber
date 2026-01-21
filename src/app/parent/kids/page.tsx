@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Plus, Share2, Link2, Copy, Check, X, Settings } from "lucide-react"
+import { Plus, Share2, Link2, Copy, Check, X } from "lucide-react"
 import { AVATAR_COLORS } from "@/lib/types"
 
 interface Kid {
@@ -106,7 +106,7 @@ export default function ParentKidsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Kids</h1>
-          <p className="text-gray-500">Manage your children's accounts</p>
+          <p className="text-gray-500">Manage your children&apos;s accounts</p>
         </div>
         <button
           onClick={() => setShowAddKidModal(true)}
@@ -235,7 +235,7 @@ export default function ParentKidsPage() {
             </div>
 
             <p className="text-sm text-gray-600 mb-4">
-              Anyone with this link can access {selectedKid.name}'s dashboard
+              Anyone with this link can access {selectedKid.name}&apos;s dashboard
               and complete tasks without logging in.
             </p>
 
@@ -306,7 +306,7 @@ function AddKidModal({
       }
 
       onSuccess()
-    } catch (err) {
+    } catch {
       setError("An error occurred")
     } finally {
       setIsLoading(false)

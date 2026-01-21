@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Lock, Shield } from "lucide-react"
 
-export function PinSetup({ kidId }: { kidId: string }) {
+export function PinSetup({ }: { kidId: string }) {
   const [pin, setPin] = useState("")
   const [confirmPin, setConfirmPin] = useState("")
   const [step, setStep] = useState<"prompt" | "enter" | "confirm">("prompt")

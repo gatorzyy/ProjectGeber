@@ -21,7 +21,7 @@ export async function GET(
     }
 
     return NextResponse.json(streak)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch streak" }, { status: 500 })
   }
 }
@@ -91,7 +91,7 @@ export async function POST(
     })
 
     return NextResponse.json(updatedStreak)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to update streak" }, { status: 500 })
   }
 }
@@ -161,7 +161,7 @@ export async function PATCH(
       bonusPoints: config.points,
       message: `Congratulations! You earned ${config.points} bonus points!`
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to claim bonus" }, { status: 500 })
   }
 }

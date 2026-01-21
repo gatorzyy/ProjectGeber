@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -16,7 +15,6 @@ export default function AdminPage() {
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [bugReportCount, setBugReportCount] = useState(0)
-  const router = useRouter()
 
   useEffect(() => {
     checkAuth()

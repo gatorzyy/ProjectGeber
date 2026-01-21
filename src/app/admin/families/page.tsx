@@ -61,6 +61,7 @@ export default function AdminFamiliesPage() {
 
   useEffect(() => {
     checkAuthAndFetch()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkAuthAndFetch = async () => {

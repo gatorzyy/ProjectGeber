@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { TaskCard } from "@/components/TaskCard"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -26,7 +25,7 @@ interface Task {
   feedbackRequested?: boolean
 }
 
-export function KidTaskList({ tasks, kidId }: { tasks: Task[]; kidId: string }) {
+export function KidTaskList({ tasks }: { tasks: Task[]; kidId: string }) {
   const router = useRouter()
   const [completingTask, setCompletingTask] = useState<Task | null>(null)
   const [proofImage, setProofImage] = useState<File | null>(null)
@@ -331,6 +330,7 @@ export function KidTaskList({ tasks, kidId }: { tasks: Task[]; kidId: string }) 
                 </Label>
                 {proofPreview ? (
                   <div className="relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={proofPreview}
                       alt="Proof preview"
@@ -443,6 +443,7 @@ export function KidTaskList({ tasks, kidId }: { tasks: Task[]; kidId: string }) 
               {viewingCompletedTask.proofImageUrl && (
                 <div>
                   <Label className="text-sm text-muted-foreground">Your Proof</Label>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={viewingCompletedTask.proofImageUrl}
                     alt="Proof"

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter, useParams } from "next/navigation"
+import { useParams } from "next/navigation"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -14,7 +14,6 @@ import { BugReportButton } from "@/components"
 export default function KidSettingsPage() {
   const params = useParams()
   const kidId = params.id as string
-  const [currentPin, setCurrentPin] = useState("")
   const [newPin, setNewPin] = useState("")
   const [confirmPin, setConfirmPin] = useState("")
   const [hasPin, setHasPin] = useState(false)
@@ -22,7 +21,6 @@ export default function KidSettingsPage() {
   const [success, setSuccess] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isPageLoading, setIsPageLoading] = useState(true)
-  const router = useRouter()
 
   // Profile fields
   const [name, setName] = useState("")
@@ -37,6 +35,7 @@ export default function KidSettingsPage() {
       fetchKidProfile()
       checkSession()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [kidId])
 
   const fetchKidProfile = async () => {

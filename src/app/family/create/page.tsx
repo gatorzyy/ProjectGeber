@@ -29,7 +29,7 @@ export default function CreateFamilyPage() {
       }
 
       router.push("/parent")
-    } catch (err) {
+    } catch {
       setError("An error occurred")
     } finally {
       setIsLoading(false)

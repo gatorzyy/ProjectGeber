@@ -4,20 +4,15 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Users, Check } from "lucide-react"
 
-interface Kid {
-  id: string
-  name: string
-}
-
 export default function ClaimFamilyPage() {
   const router = useRouter()
-  const [kids, setKids] = useState<Kid[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isClaiming, setIsClaiming] = useState(false)
   const [error, setError] = useState("")
 
   useEffect(() => {
     checkDefaultFamily()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkDefaultFamily = async () => {
@@ -52,7 +47,7 @@ export default function ClaimFamilyPage() {
       }
 
       router.push("/parent")
-    } catch (err) {
+    } catch {
       setError("An error occurred")
     } finally {
       setIsClaiming(false)

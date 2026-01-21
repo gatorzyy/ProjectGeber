@@ -73,6 +73,7 @@ export default function ParentCalendarPage() {
   useEffect(() => {
     fetchData()
     checkGoogleConnection()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -80,6 +81,7 @@ export default function ParentCalendarPage() {
       fetchTasks()
       fetchEvents()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentFamily])
 
   const fetchData = async () => {

@@ -47,10 +47,6 @@ interface CalendarViewProps {
 export function CalendarView({
   tasks,
   events = [],
-  kidId,
-  onTaskClick,
-  onEventClick,
-  onDayClick,
   onRewardsClick,
   onTodoClick,
 }: CalendarViewProps) {
@@ -182,7 +178,7 @@ export function CalendarView({
   // Days of the month
   for (let day = 1; day <= daysInMonth; day++) {
     const dayTasks = getDayTasks(day)
-    const dayEvents = getDayEvents(day)
+    getDayEvents(day) // Ensure events are fetched for the day
     const completedTasks = dayTasks.filter((t) => t.isCompleted)
     const pendingTasks = dayTasks.filter((t) => !t.isCompleted && t.requestStatus === "approved")
     const totalPoints = completedTasks.reduce((sum, t) => sum + t.pointValue, 0)

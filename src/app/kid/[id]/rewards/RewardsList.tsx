@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { RewardCard } from "@/components/TaskCard"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { Clock, Plus, X, Lightbulb, Star } from "lucide-react"
+import { Clock, Lightbulb, Star } from "lucide-react"
 import { Modal } from "@/components"
 
 interface Reward {
@@ -48,7 +48,7 @@ export function RewardsList({
   rewardRequests?: RewardRequest[]
 }) {
   const router = useRouter()
-  const [points, setPoints] = useState(kidPoints)
+  const [points] = useState(kidPoints)
   const [showSuggestForm, setShowSuggestForm] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [suggestForm, setSuggestForm] = useState({

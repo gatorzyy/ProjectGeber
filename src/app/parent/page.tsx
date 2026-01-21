@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Users, Calendar, Star, ListTodo, Plus, Share2 } from "lucide-react"
+import { Users, Calendar, Star, ListTodo, Plus } from "lucide-react"
 
 interface Kid {
   id: string
@@ -24,6 +24,7 @@ export default function ParentDashboard() {
 
   useEffect(() => {
     fetchData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fetchData = async () => {

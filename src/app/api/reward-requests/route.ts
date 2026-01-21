@@ -9,7 +9,7 @@ export async function GET() {
       orderBy: { createdAt: "desc" },
     })
     return NextResponse.json(requests)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch reward requests" }, { status: 500 })
   }
 }
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json(rewardRequest)
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to create reward request" }, { status: 500 })
   }
 }

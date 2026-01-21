@@ -102,7 +102,7 @@ export async function POST(
     const today = new Date()
     today.setHours(0, 0, 0, 0)
 
-    let streak = await prisma.streak.findUnique({
+    const streak = await prisma.streak.findUnique({
       where: { kidId },
     })
 

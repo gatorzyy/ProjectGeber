@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Check, X, Star, Clock } from "lucide-react"
 import { Redemption } from "@/lib/types"
 import { redemptionsApi } from "@/lib/api"
-import { PageHeader, KidAvatar, StarPoints } from "@/components"
+import { PageHeader, KidAvatar } from "@/components"
 
 export default function ManageRedemptionsPage() {
   const [redemptions, setRedemptions] = useState<Redemption[]>([])

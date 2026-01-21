@@ -7,10 +7,8 @@ import {
   Home,
   Users,
   Calendar,
-  Settings,
   LogOut,
   Menu,
-  X,
   ChevronDown,
   HomeIcon,
 } from "lucide-react"
@@ -45,6 +43,7 @@ export default function ParentLayout({
 
   useEffect(() => {
     fetchUserData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fetchUserData = async () => {

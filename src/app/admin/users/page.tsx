@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Users, Shield, Search, Edit, Trash2 } from "lucide-react"
+import { Shield, Search } from "lucide-react"
 
 interface User {
   id: string
@@ -24,6 +24,7 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     fetchUsers()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fetchUsers = async () => {

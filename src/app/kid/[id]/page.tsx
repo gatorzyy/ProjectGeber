@@ -4,8 +4,7 @@ import { notFound, redirect } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { StarDisplay } from "@/components/StarDisplay"
-import { ArrowLeft, Gift, ListTodo, Trophy, Settings, Star, Gem, LogOut, Calendar, Users, Flame } from "lucide-react"
+import { ArrowLeft, Gift, ListTodo, Trophy, Settings, Star, Gem, LogOut, Calendar, Users } from "lucide-react"
 import { KidTaskList } from "./KidTaskList"
 import { PinSetup } from "./PinSetup"
 import { StreakDisplay } from "./StreakDisplay"
@@ -71,7 +70,6 @@ export default async function KidDashboard({
   ).length
 
   const pendingTasks = kid.tasks.filter((t) => !t.isCompleted && t.requestStatus === "approved")
-  const pendingRequests = kid.tasks.filter((t) => t.isKidRequest && t.requestStatus === "pending")
   const gems = Math.floor(kid.totalPoints / gemRatio)
   const stars = kid.totalPoints % gemRatio
 

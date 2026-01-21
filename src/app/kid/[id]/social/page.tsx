@@ -22,6 +22,7 @@ export default function SocialPage() {
 
   useEffect(() => {
     fetchData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [kidId])
 
   const fetchData = async () => {

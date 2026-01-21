@@ -56,7 +56,7 @@ export default function RegisterPage() {
       } else {
         router.push("/family/create")
       }
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.")
     } finally {
       setIsLoading(false)
