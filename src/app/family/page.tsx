@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Users, Settings, Plus, Copy, Check, UserPlus } from "lucide-react"
+import { Users, Settings, Plus, Copy, Check, UserPlus, ArrowLeft } from "lucide-react"
 
 interface Member {
   id: string
@@ -119,6 +119,13 @@ export default function FamilyPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      <Link
+        href="/parent"
+        className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back to Dashboard
+      </Link>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Family</h1>
